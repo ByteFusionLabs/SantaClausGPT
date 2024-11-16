@@ -3,7 +3,7 @@ with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-ne
 
 ## Getting Started Local Development
 
-Create `.env`file with a variable `OPENAI_API_KEY_SANTA`, e.g.:
+Create `.env` file with a variable `OPENAI_API_KEY_SANTA`, e.g.:
 ```
 OPENAI_API_KEY_SANTA=sk-proj-sdlfjdslökjfskdljfklsj-jasdhfkjdshfkjsdhfkjsdhfkjhsd
 ```
