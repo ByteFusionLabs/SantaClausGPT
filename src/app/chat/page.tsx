@@ -112,7 +112,11 @@ export default function Chat() {
   };
 
   return (
-    <div className={"p-0 sm:p-8 bg-zinc-900 h-full gap-8 flex flex-row"}>
+    <div
+      className={
+        "p-0 sm:p-8 h-full gap-8 flex flex-row sm:bg-zinc-900 bg-black"
+      }
+    >
       <div
         className={"w-1/4 bg-zinc-950 rounded-xl h-full p-8 hidden sm:block"}
       >
@@ -124,7 +128,11 @@ export default function Chat() {
         />
       </div>
       <div className={"w-full h-full flex flex-col gap-8 "}>
-        <div className={"bg-zinc-950 w-full h-full rounded-xl overflow-auto"}>
+        <div
+          className={
+            "bg-neutral-900 sm:bg-zinc-950 w-full h-full rounded-xl overflow-auto"
+          }
+        >
           <MessageList
             autoScrollEnabled
             messageList={messageDB[selectedUser.id].messageList}
