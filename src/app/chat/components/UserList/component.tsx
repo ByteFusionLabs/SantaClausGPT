@@ -15,7 +15,7 @@ export default function ChatUserListComponent({
       {userList.map((user) => (
         <li
           key={user.id}
-          className={`flex justify-between py-4 ${selectedUser.id === user.id ? "active" : ""}`}
+          className={`cursor-pointer flex justify-between py-4 ${selectedUser.id === user.id ? "bg-slate-900" : ""}`}
           onClick={() => {
             onSelectUser(user);
           }}

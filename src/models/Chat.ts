@@ -40,6 +40,10 @@ export type IChatUserListComponent = Pick<
 
 //types
 
+export type TChatMessageDB = {
+  readonly [chatRoom: string]: { readonly messageList: TChatMessage[] };
+};
+
 export type TChatMessage = {
   readonly text: string;
   readonly id: string;
