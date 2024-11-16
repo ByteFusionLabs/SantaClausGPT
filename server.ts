@@ -1,24 +1,20 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+const openAI = require("openai");
 const { SOCKET_ACTIONS } = require("./app_socket_constants.js");
 const next = require("next");
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
-const { HfInference } = require("@huggingface/inference");
+const dotenv = require("dotenv");
 const { v4: uuidv4 } = require("uuid");
 
-// TODO all these config props to 'env' file
-const token = "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";
+dotenv.config();
+const apiKey = process.env.OPENAI_API_KEY_SANTA;
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
 const port = 3000;
-const chatModel = "gpt2";
-const chatParams = {
-  max_new_tokens: 100,
-  temperature: 0.7,
-  top_p: 0.9,
-};
+const model = "gpt-4o";
 
-const inference = new HfInference(token);
+const openAIClient = new openAI({ apiKey });
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
@@ -29,13 +25,19 @@ app.prepare().then(() => {
 
   const handleOnGenerateTextResponse = async (message) => {
     try {
-      const fullPrompt = message.text; // generate prompt here
-      const textGenerationOutput = await inference.textGeneration({
-        model: chatModel,
-        inputs: fullPrompt,
-        parameters: chatParams,
-      });
-      console.log(textGenerationOutput);
+      const fullPrompt = {
+        model,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are Santa Claus, filled with Christmas cheer. Respond with holiday magic, jokes, and kind words.",
+          },
+          { role: "user", content: message.text },
+        ],
+      };
+      const textGenerationOutput =
+        await openAIClient.chat.completions.create(fullPrompt);
       return textGenerationOutput;
     } catch (e) {
       // handle error
@@ -52,7 +54,7 @@ app.prepare().then(() => {
       const response = await handleOnGenerateTextResponse(message);
 
       socket.emit(SOCKET_ACTIONS.NEW_MESSAGE, {
-        text: response.generated_text,
+        text: response.choices[0].message.content,
         id: uuidv4(),
         isCurrentUser: false,
       });
