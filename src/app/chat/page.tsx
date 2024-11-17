@@ -138,9 +138,7 @@ export default function Chat() {
 
   return (
     <div
-      className={
-        "p-0 sm:p-8 h-full gap-8 flex flex-row sm:bg-zinc-900 bg-black"
-      }
+      className={"p-0 sm:p-4 h-full gap-4 sm:gap-8 flex flex-row bg-zinc-900"}
     >
       <div
         className={"w-1/4 bg-zinc-950 rounded-xl h-full p-4 hidden sm:block"}
@@ -153,8 +151,8 @@ export default function Chat() {
           onSelectUser={handleOnSelectUser}
         />
       </div>
-      <div className={"w-full h-full flex flex-col gap-8 "}>
-        <div className="bg-neutral-900 sm:bg-zinc-950 w-full h-full rounded-xl overflow-auto p-4">
+      <div className={"w-full h-full flex flex-col gap-8"}>
+        <div className="bg-zinc-950 w-full h-full rounded-xl overflow-auto p-4">
           <div className="w-full mb-4 rounded-xl flex p-4 bg-zinc-900 items-center gap-6">
             <div
               className={"h-12 w-12 rounded-full bg-amber-400 overflow-hidden"}
