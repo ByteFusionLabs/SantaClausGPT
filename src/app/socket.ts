@@ -9,6 +9,5 @@ const host = isBrowser
 
 console.info("isBrowser: ", isBrowser);
 console.info("Host: ", host);
-console.info("Environment Variables: ", process.env);
 
 export const socketClient: Socket | null = isBrowser ? io(host, { transports: ['websocket'] }) : null;
