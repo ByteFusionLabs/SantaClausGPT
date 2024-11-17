@@ -2,9 +2,9 @@ import { io, Socket } from "socket.io-client";
 
 const isBrowser = typeof window !== "undefined";
 const host = isBrowser
-    ? (process.env.RAILWAY_PUBLIC_DOMAIN
-        ? `wss://${process.env.RAILWAY_PUBLIC_DOMAIN}`
-        : "ws://localhost:3000") // Fallback to local for development
-    : ""; // No socket connection on server-side
+    ? (process.env.NEXT_PUBLIC_WEBSOCKET_DOMAIN
+        ? `wss://${process.env.NEXT_PUBLIC_WEBSOCKET_DOMAIN}`
+        : "ws://localhost:3000") // Use ws:// for local, wss:// for production
+    : "";
 
 export const socketClient: Socket | null = isBrowser ? io(host, { transports: ['websocket'] }) : null;

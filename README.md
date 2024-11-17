@@ -3,9 +3,10 @@ with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-ne
 
 ## Getting Started Local Development
 
-Create `.env` file with a variable `OPENAI_API_KEY_SANTA`, e.g.:
+Create `.env` file with two variables `OPENAI_API_KEY_SANTA` and `NEXT_PUBLIC_WEBSOCKET_DOMAIN`, e.g.:
 ```
 OPENAI_API_KEY_SANTA=sk-proj-sdlfjdslökjfskdljfklsj-jasdhfkjdshfkjsdhfkjsdhfkjhsd
+NEXT_PUBLIC_WEBSOCKET_DOMAIN=localhost:3000
 ```
 Please reffer to [https://platform.openai.com/docs/quickstart](https://platform.openai.com/docs/quickstart) to create your own OpenAI key
 
