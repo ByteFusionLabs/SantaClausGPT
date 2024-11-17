@@ -8,30 +8,30 @@ import { TChatMessage, TChatMessageDB, TChatUser } from "@/models/Chat";
 import ChatTextInput from "@/app/chat/components/TextInput";
 import { SOCKET_ACTIONS } from "../../../app_socket_constants";
 import { v4 as uuidv4 } from "uuid";
+import defaultSantaAvatar from "/public/santa-logo-removebg-preview.png";
+import Image from "next/image";
 
-const tempUserList: TChatUser[] = [
-  { id: "id1", name: "John Doe", avatar: "" },
-  { id: "id2", name: "John Doe 2", avatar: "" },
-  { id: "id3", name: "John Doe 3", avatar: "" },
-  { id: "id4", name: "John Doe 4", avatar: "" },
-];
-
-const chatRooms = tempUserList.reduce(
-  (acc, user) => ({ ...acc, [user.id]: { messageList: [] } }),
-  {},
-);
+const defaultUser = {
+  id: uuidv4(),
+  name: "John Doe",
+  avatar: defaultSantaAvatar,
+};
+const defaultChatRoom = defaultUser.id;
 
 export default function Chat() {
   const socket = socketClient as unknown as Socket;
   const textContext = useRef("");
-  const userIdContext = useRef(tempUserList[0].id);
+  const userIdContext = useRef(defaultUser.id);
 
   const [inputValue, setInputValue] = useState<string>("");
-  const [messageDB, setMessageDB] = useState<TChatMessageDB>(chatRooms);
+  const [messageDB, setMessageDB] = useState<TChatMessageDB>({
+    [defaultChatRoom]: { messageList: [] },
+  });
   const [isMessageListLoading, setIsMessageListLoading] = useState(false);
   const [isUserListLoading, setIsUserListLoading] = useState(false);
+  const [userList, setUserList] = useState<TChatUser[]>([defaultUser]);
 
-  const [selectedUser, setSelectedUser] = useState<TChatUser>(tempUserList[0]);
+  const [selectedUser, setSelectedUser] = useState<TChatUser>(defaultUser);
 
   useEffect(() => {
     socket.on(SOCKET_ACTIONS.CONNECT, () => {
@@ -84,16 +84,24 @@ export default function Chat() {
   };
 
   const handleOnAddMessage = (message: TChatMessage) => {
+    console.log(message);
     if (!message.isCurrentUser) setIsMessageListLoading(false); // set isLoading to false when get response from server
-    setMessageDB((prevState) => ({
-      ...prevState,
-      [userIdContext.current]: {
-        messageList: [...prevState[userIdContext.current].messageList, message],
-      },
-    }));
+    setMessageDB((prevState) => {
+      console.log("prev", prevState);
+      return {
+        ...prevState,
+        [message.roomId]: {
+          messageList: [
+            ...prevState[userIdContext.current].messageList,
+            message,
+          ],
+        },
+      };
+    });
   };
 
   const handleOnSendMessage = (fromContext?: string) => {
+    console.log(userIdContext.current);
     const message = inputValue.trim() || fromContext;
     if (message) {
       setIsMessageListLoading(true);
@@ -102,9 +110,26 @@ export default function Chat() {
         text: message,
         id: uuidv4(),
         isCurrentUser: true,
+        roomId: userIdContext.current,
       });
     }
   };
+
+  const handleOnAddUser = (name: string) => {
+    const id = uuidv4();
+    const newUser: TChatUser = {
+      name,
+      id,
+      avatar: defaultSantaAvatar,
+    };
+    setUserList((prevState) => [...prevState, newUser]);
+    setMessageDB((prevState) => ({
+      ...prevState,
+      [id]: { messageList: [] },
+    }));
+  };
+
+  const handleOnRemoveUser = (id: string) => {};
 
   const handleOnSelectUser = (user: TChatUser) => {
     setSelectedUser(user);
@@ -118,21 +143,28 @@ export default function Chat() {
       }
     >
       <div
-        className={"w-1/4 bg-zinc-950 rounded-xl h-full p-8 hidden sm:block"}
+        className={"w-1/4 bg-zinc-950 rounded-xl h-full p-4 hidden sm:block"}
       >
         <UserList
           isLoading={isUserListLoading}
           selectedUser={selectedUser}
-          userList={tempUserList}
+          userList={userList}
+          onAddUser={handleOnAddUser}
           onSelectUser={handleOnSelectUser}
         />
       </div>
       <div className={"w-full h-full flex flex-col gap-8 "}>
-        <div
-          className={
-            "bg-neutral-900 sm:bg-zinc-950 w-full h-full rounded-xl overflow-auto"
-          }
-        >
+        <div className="bg-neutral-900 sm:bg-zinc-950 w-full h-full rounded-xl overflow-auto p-4">
+          <div className="w-full mb-4 rounded-xl flex p-4 bg-zinc-900 items-center gap-6">
+            <div
+              className={"h-12 w-12 rounded-full bg-amber-400 overflow-hidden"}
+            >
+              {selectedUser.avatar && (
+                <Image className="h-12 w-12" src={selectedUser.avatar} alt="" />
+              )}
+            </div>
+            <div className="text-white text-2xl">{selectedUser.name}</div>
+          </div>
           <MessageList
             autoScrollEnabled
             messageList={messageDB[selectedUser.id].messageList}
