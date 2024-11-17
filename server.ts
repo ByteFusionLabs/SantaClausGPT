@@ -10,7 +10,7 @@ const { v4: uuidv4 } = require("uuid");
 dotenv.config();
 const apiKey = process.env.OPENAI_API_KEY_SANTA;
 const dev = process.env.NODE_ENV !== "production";
-const hostname = process.env.RAILWAY_PUBLIC_DOMAIN ? `${process.env.RAILWAY_PUBLIC_DOMAIN}` : "localhost";
+const hostname = "localhost";
 const port = 3000;
 const model = "gpt-4o";
 
