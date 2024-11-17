@@ -21,3 +21,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Deployed on Railway
 
 [https://santaclausgpt-production.up.railway.app](https://santaclausgpt-production.up.railway.app)
+
+Get your own Railway with our referral link [https://railway.app?referralCode=_vQmXZ](https://railway.app?referralCode=_vQmXZ)
