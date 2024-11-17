@@ -57,6 +57,7 @@ app.prepare().then(() => {
         text: response.choices[0].message.content,
         id: uuidv4(),
         isCurrentUser: false,
+        roomId: message.roomId,
       });
     });
 

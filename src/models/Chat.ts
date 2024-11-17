@@ -1,5 +1,6 @@
 //interfaces
 import { ChangeEvent, MutableRefObject } from "react";
+import { StaticImageData } from "next/image";
 
 export interface IChatMessageListProps {
   readonly autoScrollEnabled: boolean;
@@ -30,13 +31,22 @@ export interface IChatUserListProps {
   readonly isLoading: boolean;
   readonly selectedUser: TChatUser;
   readonly userList: TChatUser[];
+  readonly onAddUser: (userName: string) => void;
   readonly onSelectUser: (user: TChatUser) => void;
 }
 
-export type IChatUserListComponent = Pick<
-  IChatUserListProps,
-  "isLoading" | "selectedUser" | "userList" | "onSelectUser" // add new props here
->;
+export interface IChatUserListComponent
+  extends Pick<
+    IChatUserListProps,
+    "isLoading" | "selectedUser" | "userList" | "onSelectUser"
+  > {
+  readonly addUserMode: boolean;
+  readonly isDisabledAddUser: boolean;
+  readonly userName: string;
+  readonly onAddUser: () => void;
+  readonly onChangeUserName: (e: ChangeEvent<HTMLInputElement>) => void;
+  readonly onToggleAddUserMode: () => void;
+}
 
 //types
 
@@ -48,10 +58,11 @@ export type TChatMessage = {
   readonly text: string;
   readonly id: string;
   readonly isCurrentUser: boolean;
+  readonly roomId: string;
 };
 
 export type TChatUser = {
   readonly id: string;
   readonly name: string;
-  readonly avatar: string;
+  readonly avatar: string | StaticImageData;
 };
