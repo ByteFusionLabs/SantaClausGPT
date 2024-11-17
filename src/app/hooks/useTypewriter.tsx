@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
-export default function useTypewriter(text, delay = 100) {
+export default function useTypewriter(text, delay = 50) {
   const [displayText, setDisplayText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
     if (currentIndex < text.length) {
       const timeout = setTimeout(() => {
