@@ -5,7 +5,5 @@ export default function ChatLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  return (
-    <div className={"p-4 sm:p-16 h-full w-full rounded-3xl"}>{children}</div>
-  );
+  return <div className={"p-4 h-full w-full"}>{children}</div>;
 }
