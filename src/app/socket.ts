@@ -7,6 +7,7 @@ const host = isBrowser
         : "ws://localhost:3000") // Fallback to local for development
     : ""; // No socket connection on server-side
 
+console.info("isBrowser: ", isBrowser);
 console.info("Host: ", host);
 console.info("Environment Variables: ", process.env);
 
